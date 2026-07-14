@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Apprentice extends Model
+class CourseTeacher extends Model
 {
     use HasFactory;
 
@@ -14,8 +14,8 @@ class Apprentice extends Model
         return $this->belongsTo(Course::class);
     }
 
-    public function computer()
+    public function teacher()
     {
-        return $this->belongsTo(Computer::class);
+        return $this->belongsTo(Teacher::class);
     }
 }
