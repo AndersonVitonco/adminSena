@@ -45,4 +45,17 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    /**
+     * Always answer in JSON for the API routes, so Postman never
+     * receives an HTML page for validation errors (422) or 404s.
+     */
+    public function render($request, Throwable $e)
+    {
+        if ($request->is('api/*')) {
+            $request->headers->set('Accept', 'application/json');
+        }
+
+        return parent::render($request, $e);
+    }
 }

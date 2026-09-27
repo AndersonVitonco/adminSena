@@ -1,0 +1,1626 @@
+{
+    "info":  {
+                 "name":  "AdminSENA - Pruebas CRUD con Postman",
+                 "description":  "Pruebas de los 6 CRUD del modelo relacional ADMINSENA (sin course_teacher).\nCada carpeta crea, lee, actualiza, lista, borra y verifica el borrado de un registro.\nTodo se auto-limpia: no altera los datos de ejemplo de la base.",
+                 "schema":  "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+             },
+    "variable":  [
+                     {
+                         "key":  "baseUrl",
+                         "value":  "http://api.bloger.test/api"
+                     }
+                 ],
+    "item":  [
+                 {
+                     "name":  "0. Prueba de conexion",
+                     "item":  [
+                                  {
+                                      "name":  "GET /hola  (debe dar 200)",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027Devuelve el mensaje hola\u0027, function () { pm.expect(pm.response.json().mensaje).to.eql(\u0027hola\u0027); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/hola",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "hola"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "1. areas",
+                     "item":  [
+                                  {
+                                      "name":  "POST /areas  -\u003e crea",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200 al crear\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027Tiene id\u0027, function () { pm.expect(pm.response.json().id).to.be.above(0); });",
+                                                                                "var json = pm.response.json();",
+                                                                                "pm.environment.set(\u0027id\u0027, String(json.id));"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/areas",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "areas"
+                                                                           ]
+                                                              },
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"name\":\"Prueba Area\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /areas/{id} -\u003e lee lo creado",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027El id coincide\u0027, function () { pm.expect(String(pm.response.json().id)).to.eql(pm.environment.get(\u0027id\u0027)); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/areas/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "areas",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "PUT /areas/{id} -\u003e actualiza",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200 al actualizar\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027El campo name cambio\u0027, function () { pm.expect(pm.response.json().name).to.eql(\u0027Prueba Area Editada\u0027); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "PUT",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/areas/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "areas",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              },
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"name\":\"Prueba Area Editada\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /areas  -\u003e lista completa",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027Es una lista con registros\u0027, function () { pm.expect(pm.response.json().length).to.be.above(0); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/areas",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "areas"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "DELETE /areas/{id} -\u003e elimina",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200 al eliminar\u0027, function () { pm.response.to.have.status(200); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/areas/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "areas",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /areas/{id} -\u003e confirma borrado (404)",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Ya no existe (404)\u0027, function () { pm.response.to.have.status(404); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/areas/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "areas",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "2. training-centers",
+                     "item":  [
+                                  {
+                                      "name":  "POST /training-centers  -\u003e crea",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200 al crear\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027Tiene id\u0027, function () { pm.expect(pm.response.json().id).to.be.above(0); });",
+                                                                                "var json = pm.response.json();",
+                                                                                "pm.environment.set(\u0027id\u0027, String(json.id));"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/training-centers",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "training-centers"
+                                                                           ]
+                                                              },
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"name\":\"Prueba Centro\",\"location\":\"Bogota\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /training-centers/{id} -\u003e lee lo creado",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027El id coincide\u0027, function () { pm.expect(String(pm.response.json().id)).to.eql(pm.environment.get(\u0027id\u0027)); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/training-centers/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "training-centers",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "PUT /training-centers/{id} -\u003e actualiza",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200 al actualizar\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027El campo location cambio\u0027, function () { pm.expect(pm.response.json().location).to.eql(\u0027Medellin\u0027); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "PUT",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/training-centers/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "training-centers",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              },
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"name\":\"Prueba Centro\",\"location\":\"Medellin\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /training-centers  -\u003e lista completa",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027Es una lista con registros\u0027, function () { pm.expect(pm.response.json().length).to.be.above(0); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/training-centers",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "training-centers"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "DELETE /training-centers/{id} -\u003e elimina",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200 al eliminar\u0027, function () { pm.response.to.have.status(200); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/training-centers/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "training-centers",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /training-centers/{id} -\u003e confirma borrado (404)",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Ya no existe (404)\u0027, function () { pm.response.to.have.status(404); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/training-centers/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "training-centers",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "3. computers",
+                     "item":  [
+                                  {
+                                      "name":  "POST /computers  -\u003e crea",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200 al crear\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027Tiene id\u0027, function () { pm.expect(pm.response.json().id).to.be.above(0); });",
+                                                                                "var json = pm.response.json();",
+                                                                                "pm.environment.set(\u0027id\u0027, String(json.id));"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/computers",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "computers"
+                                                                           ]
+                                                              },
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"number\":\"COMP-PRUEBA\",\"brand\":\"Prueba\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /computers/{id} -\u003e lee lo creado",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027El id coincide\u0027, function () { pm.expect(String(pm.response.json().id)).to.eql(pm.environment.get(\u0027id\u0027)); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/computers/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "computers",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "PUT /computers/{id} -\u003e actualiza",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200 al actualizar\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027El campo brand cambio\u0027, function () { pm.expect(pm.response.json().brand).to.eql(\u0027Prueba Editada\u0027); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "PUT",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/computers/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "computers",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              },
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"number\":\"COMP-PRUEBA\",\"brand\":\"Prueba Editada\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /computers  -\u003e lista completa",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027Es una lista con registros\u0027, function () { pm.expect(pm.response.json().length).to.be.above(0); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/computers",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "computers"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "DELETE /computers/{id} -\u003e elimina",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200 al eliminar\u0027, function () { pm.response.to.have.status(200); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/computers/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "computers",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /computers/{id} -\u003e confirma borrado (404)",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Ya no existe (404)\u0027, function () { pm.response.to.have.status(404); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/computers/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "computers",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "4. courses",
+                     "item":  [
+                                  {
+                                      "name":  "POST /courses  -\u003e crea",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200 al crear\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027Tiene id\u0027, function () { pm.expect(pm.response.json().id).to.be.above(0); });",
+                                                                                "var json = pm.response.json();",
+                                                                                "pm.environment.set(\u0027id\u0027, String(json.id));"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/courses",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "courses"
+                                                                           ]
+                                                              },
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"course_number\":\"Prueba Curso\",\"day\":\"Lunes\",\"area_id\":1,\"training_center_id\":1}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /courses/{id} -\u003e lee lo creado",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027El id coincide\u0027, function () { pm.expect(String(pm.response.json().id)).to.eql(pm.environment.get(\u0027id\u0027)); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/courses/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "courses",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "PUT /courses/{id} -\u003e actualiza",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200 al actualizar\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027El campo day cambio\u0027, function () { pm.expect(pm.response.json().day).to.eql(\u0027Martes\u0027); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "PUT",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/courses/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "courses",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              },
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"course_number\":\"Prueba Curso\",\"day\":\"Martes\",\"area_id\":1,\"training_center_id\":1}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /courses  -\u003e lista completa",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027Es una lista con registros\u0027, function () { pm.expect(pm.response.json().length).to.be.above(0); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/courses",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "courses"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "DELETE /courses/{id} -\u003e elimina",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200 al eliminar\u0027, function () { pm.response.to.have.status(200); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/courses/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "courses",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /courses/{id} -\u003e confirma borrado (404)",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Ya no existe (404)\u0027, function () { pm.response.to.have.status(404); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/courses/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "courses",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "5. teachers",
+                     "item":  [
+                                  {
+                                      "name":  "POST /teachers  -\u003e crea",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200 al crear\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027Tiene id\u0027, function () { pm.expect(pm.response.json().id).to.be.above(0); });",
+                                                                                "var json = pm.response.json();",
+                                                                                "pm.environment.set(\u0027id\u0027, String(json.id));"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/teachers",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "teachers"
+                                                                           ]
+                                                              },
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"name\":\"Prueba Docente\",\"email\":\"prueba.docente@correo.com\",\"area_id\":1,\"training_center_id\":1}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /teachers/{id} -\u003e lee lo creado",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027El id coincide\u0027, function () { pm.expect(String(pm.response.json().id)).to.eql(pm.environment.get(\u0027id\u0027)); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/teachers/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "teachers",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "PUT /teachers/{id} -\u003e actualiza",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200 al actualizar\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027El campo name cambio\u0027, function () { pm.expect(pm.response.json().name).to.eql(\u0027Prueba Docente Editado\u0027); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "PUT",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/teachers/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "teachers",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              },
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"name\":\"Prueba Docente Editado\",\"email\":\"prueba.docente@correo.com\",\"area_id\":1,\"training_center_id\":1}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /teachers  -\u003e lista completa",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027Es una lista con registros\u0027, function () { pm.expect(pm.response.json().length).to.be.above(0); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/teachers",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "teachers"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "DELETE /teachers/{id} -\u003e elimina",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200 al eliminar\u0027, function () { pm.response.to.have.status(200); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/teachers/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "teachers",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /teachers/{id} -\u003e confirma borrado (404)",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Ya no existe (404)\u0027, function () { pm.response.to.have.status(404); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/teachers/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "teachers",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "6. apprentices",
+                     "item":  [
+                                  {
+                                      "name":  "POST /apprentices  -\u003e crea",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200 al crear\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027Tiene id\u0027, function () { pm.expect(pm.response.json().id).to.be.above(0); });",
+                                                                                "var json = pm.response.json();",
+                                                                                "pm.environment.set(\u0027id\u0027, String(json.id));"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/apprentices",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "apprentices"
+                                                                           ]
+                                                              },
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"name\":\"Prueba Aprendiz\",\"email\":\"prueba.aprendiz@correo.com\",\"cell_number\":\"3009998888\",\"course_id\":1,\"computer_id\":1}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /apprentices/{id} -\u003e lee lo creado",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027El id coincide\u0027, function () { pm.expect(String(pm.response.json().id)).to.eql(pm.environment.get(\u0027id\u0027)); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/apprentices/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "apprentices",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "PUT /apprentices/{id} -\u003e actualiza",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200 al actualizar\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027El campo name cambio\u0027, function () { pm.expect(pm.response.json().name).to.eql(\u0027Prueba Aprendiz Editado\u0027); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "PUT",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/apprentices/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "apprentices",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              },
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"name\":\"Prueba Aprendiz Editado\",\"email\":\"prueba.aprendiz@correo.com\",\"cell_number\":\"3009997777\",\"course_id\":1,\"computer_id\":1}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /apprentices  -\u003e lista completa",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200\u0027, function () { pm.response.to.have.status(200); });",
+                                                                                "pm.test(\u0027Es una lista con registros\u0027, function () { pm.expect(pm.response.json().length).to.be.above(0); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/apprentices",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "apprentices"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "DELETE /apprentices/{id} -\u003e elimina",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 200 al eliminar\u0027, function () { pm.response.to.have.status(200); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/apprentices/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "apprentices",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /apprentices/{id} -\u003e confirma borrado (404)",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Ya no existe (404)\u0027, function () { pm.response.to.have.status(404); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/apprentices/{{id}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "apprentices",
+                                                                               "{{id}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "7. Validaciones",
+                     "item":  [
+                                  {
+                                      "name":  "POST /areas vacio -\u003e 422",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Responde 422 con errores en JSON\u0027, function () { pm.response.to.have.status(422); });",
+                                                                                "pm.test(\u0027Dice que name es obligatorio\u0027, function () { pm.expect(pm.response.json().errors.name).to.not.be.undefined; });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/areas",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "areas"
+                                                                           ]
+                                                              },
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "GET /areas/99999 -\u003e 404",
+                                      "event":  {
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "application/javascript",
+                                                                   "exec":  [
+                                                                                "pm.test(\u0027Recurso inexistente (404)\u0027, function () { pm.response.to.have.status(404); });"
+                                                                            ]
+                                                               }
+                                                },
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json",
+                                                                         "type":  "text"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/areas/99999",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "areas",
+                                                                               "99999"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  }
+                              ]
+                 }
+             ]
+}
