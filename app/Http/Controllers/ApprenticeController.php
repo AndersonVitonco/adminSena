@@ -9,7 +9,7 @@ class ApprenticeController extends Controller
 {
     public function index()
     {
-        $apprentices = Apprentice::included()->filter()->sort()->getOrPaginate();
+        $apprentices = Apprentice::all();
 
         return response()->json($apprentices);
     }
@@ -31,7 +31,7 @@ class ApprenticeController extends Controller
 
     public function show($id)
     {
-        $apprentice = Apprentice::included()->findOrFail($id);
+        $apprentice = Apprentice::findOrFail($id);
 
         return response()->json($apprentice);
     }

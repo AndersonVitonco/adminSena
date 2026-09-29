@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Course;
+use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
     public function index()
     {
-        $courses = Course::included()->filter()->sort()->getOrPaginate();
+        $courses = Course::all();
 
         return response()->json($courses);
     }
@@ -30,7 +30,7 @@ class CourseController extends Controller
 
     public function show($id)
     {
-        $course = Course::included()->findOrFail($id);
+        $course = Course::findOrFail($id);
 
         return response()->json($course);
     }

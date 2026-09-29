@@ -9,7 +9,7 @@ class AreaController extends Controller
 {
     public function index()
     {
-        $areas = Area::included()->filter()->sort()->getOrPaginate();
+        $areas = Area::all();
 
         return response()->json($areas);
     }
@@ -27,7 +27,7 @@ class AreaController extends Controller
 
     public function show($id)
     {
-        $area = Area::included()->findOrFail($id);
+        $area = Area::findOrFail($id);
 
         return response()->json($area);
     }

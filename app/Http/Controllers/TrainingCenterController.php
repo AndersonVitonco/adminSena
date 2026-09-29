@@ -9,7 +9,7 @@ class TrainingCenterController extends Controller
 {
     public function index()
     {
-        $trainingCenters = TrainingCenter::included()->filter()->sort()->getOrPaginate();
+        $trainingCenters = TrainingCenter::all();
 
         return response()->json($trainingCenters);
     }
@@ -28,7 +28,7 @@ class TrainingCenterController extends Controller
 
     public function show($id)
     {
-        $trainingCenter = TrainingCenter::included()->findOrFail($id);
+        $trainingCenter = TrainingCenter::findOrFail($id);
 
         return response()->json($trainingCenter);
     }

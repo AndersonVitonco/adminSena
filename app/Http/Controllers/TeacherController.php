@@ -9,7 +9,7 @@ class TeacherController extends Controller
 {
     public function index()
     {
-        $teachers = Teacher::included()->filter()->sort()->getOrPaginate();
+        $teachers = Teacher::all();
 
         return response()->json($teachers);
     }
@@ -30,7 +30,7 @@ class TeacherController extends Controller
 
     public function show($id)
     {
-        $teacher = Teacher::included()->findOrFail($id);
+        $teacher = Teacher::findOrFail($id);
 
         return response()->json($teacher);
     }
