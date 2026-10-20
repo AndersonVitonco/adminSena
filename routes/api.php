@@ -40,9 +40,9 @@ Route::delete('areas/{area}', [AreaController::class, 'destroy'])->name('api.v1.
 
 Route::get('training-centers', [TrainingCenterController::class, 'index'])->name('api.v1.training-centers.index');
 Route::post('training-centers', [TrainingCenterController::class, 'store'])->name('api.v1.training-centers.store');
-Route::get('training-centers/{training_center}', [TrainingCenterController::class, 'show'])->name('api.v1.training-centers.show');
-Route::put('training-centers/{training_center}', [TrainingCenterController::class, 'update'])->name('api.v1.training-centers.update');
-Route::delete('training-centers/{training_center}', [TrainingCenterController::class, 'destroy'])->name('api.v1.training-centers.destroy');
+Route::get('training-centers/{trainingCenter}', [TrainingCenterController::class, 'show'])->name('api.v1.training-centers.show');
+Route::put('training-centers/{trainingCenter}', [TrainingCenterController::class, 'update'])->name('api.v1.training-centers.update');
+Route::delete('training-centers/{trainingCenter}', [TrainingCenterController::class, 'destroy'])->name('api.v1.training-centers.destroy');
 
 Route::get('computers', [ComputerController::class, 'index'])->name('api.v1.computers.index');
 Route::post('computers', [ComputerController::class, 'store'])->name('api.v1.computers.store');
